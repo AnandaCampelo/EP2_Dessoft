@@ -50,7 +50,7 @@ while k:
             print('Sinto muito! Você zerou suas chances :(' + '\n' + 'O País sorteado era: {0}'.format(pais))
             novamente = input('Jogar novamente? [s/n]' + '\n')
             if novamente == 'n':
-                print('Até a próxima!')
+                print('\n' + '\n' + '   Até a próxima!')
                 k = False
                 j = False
                 break
