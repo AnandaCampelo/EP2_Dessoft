@@ -1,11 +1,11 @@
 #começando o jogo
-from Funções import normaliza, sorteia_pais
+from Funções import adiciona_em_ordem, haversine, normaliza, sorteia_pais, esta_na_lista
 from dados import dados_paises
 from dados import raio
 
 dados_paises = normaliza(dados_paises)
 
-print ("*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*" + ("\n") + "|                               |"+ ("\n") +"| Bem-vindo à: Descobrir Países |"+ ("\n")+ "|                               |"+ ("\n") + "  ==== Design de Software ==== "+ ("\n") + ("\n") +"Comandos:" + ("\n") +  "dica       - entra no mercado de dicas"  + ("\n") + "desisto    - desiste da rodada" + ("\n") + "inventario - exibe sua posição"+ ("\n") + ("\n"))
+print ('\n' + "*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*" + ("\n") + "|                               |"+ ("\n") +"| Bem-vindo à: Descobrir Países |"+ ("\n")+ "|                               |"+ ("\n") + "  ==== Design de Software ==== "+ ("\n") + ("\n") +"Comandos:" + ("\n") +  "dica       - entra no mercado de dicas"  + ("\n") + "desisto    - desiste da rodada" + ("\n") + "inventario - exibe sua posição"+ ("\n") + ("\n"))
 pais = sorteia_pais(dados_paises)
 chances = 20
 dic_cores = (dados_paises[pais]["bandeira"])
@@ -29,6 +29,20 @@ for cor,valor in dic_cores.items():
 
 k = True
 
+comandos = ['dica', 'desisto', 'inventario']
+
+lista_ja_escolhido = []
+lista_distancias = []
+
 while k:
-    print('\n' + '| O jogo começou!                  |' + '\n' + '| Tente descobri o País escolhido! |' + '\n' + '| Você tem 20 chances!             |')
-    palavra = input('\n' + 'Qual seu palpite?' + '\n')  
+    print('\n' + '|          O jogo começou!         |' + '\n' + '| Tente descobri o País escolhido! |' + '\n' + '|       Você tem 20 chances!       |')
+    palavra = input('\n' + 'Qual seu palpite?' + '\n')
+    if palavra in dados_paises and palavra not in comandos:
+        distancia = haversine(raio, dados_paises[pais]['geo']['latitude'], dados_paises[pais]['geo']['longitude'], dados_paises[palavra]['geo']['latitude'], dados_paises[palavra]['geo']['longitude'])
+        if esta_na_lista(palavra, lista_ja_escolhido):
+            print('\n' + ' Denovo?! Você já escolheu esse, escolha outro País!')
+        elif distancia > 0:
+            chances -= 1
+            lista_ja_escolhido.append(palavra)
+            lista_distancias = adiciona_em_ordem(palavra, distancia, lista_distancias)
+            print('\n' + 'Distância' + '->' + distancia + '\n')
