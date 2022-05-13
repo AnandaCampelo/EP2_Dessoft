@@ -84,7 +84,12 @@ while k:
                 print('{0} {1} {2}'.format(print_dist,print_dicas,print_chances))
             elif distancia == 0 and palavra == pais:
                 print('*+*+* Parabéns! Você acertou após {0} tentativas! *+*+*'.format(tentativas))
-                break
+                novamente = input('Jogar novamente? [s/n]' + '\n')
+                if novamente == 'n':
+                    print('\n' + '\n' + '   Até a próxima!')
+                    k = False
+                    j = False
+                    break
         elif palavra not in dados_paises and palavra not in comandos:
             print('País desconhecido, ou comando inexistente.')
         else:
