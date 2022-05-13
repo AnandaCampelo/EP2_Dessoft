@@ -6,49 +6,72 @@ from dados import raio
 dados_paises = normaliza(dados_paises)
 
 print ('\n' + "*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*" + ("\n") + "|                               |"+ ("\n") +"| Bem-vindo à: Descobrir Países |"+ ("\n")+ "|                               |"+ ("\n") + "  ==== Design de Software ==== "+ ("\n") + ("\n") +"Comandos:" + ("\n") +  "dica       - entra no mercado de dicas"  + ("\n") + "desisto    - desiste da rodada" + ("\n") + "inventario - exibe sua posição"+ ("\n") + ("\n"))
-pais = sorteia_pais(dados_paises)
-chances = 20
-dic_cores = (dados_paises[pais]["bandeira"])
-lista_cores = []
-lista_letra = list(dados_paises[pais]["capital"])
-lista_nova_letra = []
-areas = (dados_paises[pais]["area"])
-populacao = (dados_paises[pais]["populacao"])
-continente = (dados_paises[pais]["continente"])
-
-dic_cor_bandeira = {"+ Cores da bandeira": lista_cores}
-dic_letra_capital = {"+ Letras da capital": lista_nova_letra}
-dic_area = {"+ Área": areas}
-dic_populacao = {"+ População": populacao}
-dic_continente = {"+ Continente": continente}
-dic_dicas = {1: "Cor da bandeira", 2: "Letra da capital", 3: "Área", 4: "População", 5: "Continente", 0: "Sem dica"}
-
-for cor,valor in dic_cores.items():
-    if cor != 'outras' and valor > 0:
-        lista_cores.append(cor)
 
 k = True
 
-comandos = ['dica', 'desisto', 'inventario']
-
-lista_ja_escolhido = []
-lista_distancias = []
-
 while k:
     print('\n' + '|          O jogo começou!         |' + '\n' + '| Tente descobri o País escolhido! |' + '\n' + '|       Você tem 20 chances!       |')
+    chances = 19
+    tentativas = 0
+    pais = sorteia_pais(dados_paises)
+    dic_cores = (dados_paises[pais]["bandeira"])
+    lista_cores = []
+    lista_letra = list(dados_paises[pais]["capital"])
+    lista_nova_letra = []
+    areas = (dados_paises[pais]["area"])
+    populacao = (dados_paises[pais]["populacao"])
+    continente = (dados_paises[pais]["continente"])
+
+    dic_cor_bandeira = {"+ Cores da bandeira": lista_cores}
+    dic_letra_capital = {"+ Letras da capital": lista_nova_letra}
+    dic_area = {"+ Área": areas}
+    dic_populacao = {"+ População": populacao}
+    dic_continente = {"+ Continente": continente}
+    dic_dicas = {1: "Cor da bandeira", 2: "Letra da capital", 3: "Área", 4: "População", 5: "Continente", 0: "Sem dica"}
+
+    for cor,valor in dic_cores.items():
+        if cor != 'outras' and valor > 0:
+            lista_cores.append(cor)
+
+    comandos = ['dica', 'desisto', 'inventario']
+
+    lista_ja_escolhido = []
+    lista_distancias = []
+
     j = True
     while j:
         palavra = input('\n' + 'Qual seu palpite?' + '\n')
+
         print_dist = '\n' + 'Distâncias:'
+        print_dicas = '\n' + '\n' + 'Dicas:'
+        print_chances = '\n' + '\n' + 'Você tem {0} tentativa(s)'.format(chances)
+        
+        if chances == 0:
+            print('Sinto muito! Você zerou suas chances :(' + '\n' + 'O País sorteado era: {0}'.format(pais))
+            novamente = input('Jogar novamente? [s/n]' + '\n')
+            if novamente == 'n':
+                print('Até a próxima!')
+                k = False
+                j = False
+                break
+            else:
+                j = False
+                break
         if palavra in dados_paises and palavra not in comandos:
             distancia = haversine(raio, dados_paises[pais]['geo']['latitude'], dados_paises[pais]['geo']['longitude'], dados_paises[palavra]['geo']['latitude'], dados_paises[palavra]['geo']['longitude'])
-            if esta_na_lista(palavra, lista_ja_escolhido):
+            if esta_na_lista(palavra, lista_ja_escolhido) == True or palavra in lista_ja_escolhido:
                 print('\n' + ' Denovo?! Você já escolheu esse, escolha outro País!')
             elif distancia > 0:
                 chances -= 1
+                tentativas += 1 
                 lista_ja_escolhido.append(palavra)
+                print(lista_ja_escolhido)
                 lista_distancias = adiciona_em_ordem(palavra, distancia, lista_distancias)
-                print_dist += '\n' + '   {0} -> {1}'.format(distancia, palavra)
-                print(print_dist)
+                for e in lista_distancias:
+                    print_dist += '\n' + '  {0} -> {1}'.format(e[1],e[0])
+                print('{0} {1} {2}'.format(print_dist,print_dicas,print_chances))
+            elif distancia == 0 and palavra == pais:
+                print('*+*+* Parabéns! Você acertou após {0} tentativas! *+*+*'.format(tentativas))
         elif palavra not in dados_paises and palavra not in comandos:
             print('País desconhecido, ou comando inexistente.')
+        
