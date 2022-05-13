@@ -36,13 +36,19 @@ lista_distancias = []
 
 while k:
     print('\n' + '|          O jogo começou!         |' + '\n' + '| Tente descobri o País escolhido! |' + '\n' + '|       Você tem 20 chances!       |')
-    palavra = input('\n' + 'Qual seu palpite?' + '\n')
-    if palavra in dados_paises and palavra not in comandos:
-        distancia = haversine(raio, dados_paises[pais]['geo']['latitude'], dados_paises[pais]['geo']['longitude'], dados_paises[palavra]['geo']['latitude'], dados_paises[palavra]['geo']['longitude'])
-        if esta_na_lista(palavra, lista_ja_escolhido):
-            print('\n' + ' Denovo?! Você já escolheu esse, escolha outro País!')
-        elif distancia > 0:
-            chances -= 1
-            lista_ja_escolhido.append(palavra)
-            lista_distancias = adiciona_em_ordem(palavra, distancia, lista_distancias)
-            print('\n' + 'Distância' + '->' + distancia + '\n')
+    j = True
+    while j:
+        palavra = input('\n' + 'Qual seu palpite?' + '\n')
+        print_dist = '\n' + 'Distâncias:'
+        if palavra in dados_paises and palavra not in comandos:
+            distancia = haversine(raio, dados_paises[pais]['geo']['latitude'], dados_paises[pais]['geo']['longitude'], dados_paises[palavra]['geo']['latitude'], dados_paises[palavra]['geo']['longitude'])
+            if esta_na_lista(palavra, lista_ja_escolhido):
+                print('\n' + ' Denovo?! Você já escolheu esse, escolha outro País!')
+            elif distancia > 0:
+                chances -= 1
+                lista_ja_escolhido.append(palavra)
+                lista_distancias = adiciona_em_ordem(palavra, distancia, lista_distancias)
+                print_dist += '\n' + '   {0} -> {1}'.format(distancia, palavra)
+                print(print_dist)
+        elif palavra not in dados_paises and palavra not in comandos:
+            print('País desconhecido, ou comando inexistente.')
