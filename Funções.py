@@ -40,3 +40,49 @@ def esta_na_lista(pais,lista2):
         a = False
   
     return a
+
+#adiciona pais e distancia se n existir
+def adiciona_em_ordem(pais,dist,lista):
+    lista2 = []
+    p = [pais, dist]
+    if pais in lista:
+        return lista
+    else:
+        if len(lista) > 0:
+            for e in lista:
+                if dist < e[1] and p not in lista2:
+                    lista2.append(p)
+                    lista2.append(e)
+                else:
+                    lista2.append(e)
+            if p not in lista2:
+                lista2.append(p)
+        else:
+            lista2.append(p)
+        return lista2
+
+#sorteia letra
+import random
+
+def sorteia_letra(palavra, lista):
+    r2 = ['.', ',', '-', ';', ' ']
+    r1 = []
+    for e in lista:
+        if e >= 'a' and e <= 'z' or e >='A' and e <= 'Z':
+            a = e.swapcase()
+            r1.append(a)
+            r1.append(e)
+        else:
+            r1.append(e)
+    k = True
+    soma = 0
+    for e in palavra:
+        if e not in r1 and e not in r2:
+            soma += 1
+    if soma > 0:
+        while k:
+            sorteada = random.choice(palavra)
+            if sorteada not in r1 and sorteada not in r2:
+                return sorteada
+    else:
+        return ''
