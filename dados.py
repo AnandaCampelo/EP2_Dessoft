@@ -1,4 +1,4 @@
-raio_terra = 6371
+raio = 6371
 
 dados_paises = {
   "asia": {

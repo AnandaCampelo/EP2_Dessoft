@@ -1,7 +1,7 @@
 #começando o jogo
 from Funções import normaliza, sorteia_pais
 from dados import dados_paises
-from dados import raio_terra
+from dados import raio
 
 dados_paises = normaliza(dados_paises)
 
