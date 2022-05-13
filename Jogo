@@ -5,7 +5,7 @@ from dados import raio
 
 dados_paises = normaliza(dados_paises)
 
-print ("*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+" + ("\n") + "|                            |"+ ("\n") +"| Bem-vindo ao Insper Países |"+ ("\n")+ "|                            |"+ ("\n") + "==== Design de Software ==== "+ ("\n") + ("\n") +"Comandos:" + ("\n") +  "dica       - entra no mercado de dicas"  + ("\n") + "desisto    - desiste da rodada" + ("\n") + "inventario - exibe sua posição"+ ("\n") + ("\n"))
+print ("*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*" + ("\n") + "|                               |"+ ("\n") +"| Bem-vindo à: Descobrir Países |"+ ("\n")+ "|                               |"+ ("\n") + "  ==== Design de Software ==== "+ ("\n") + ("\n") +"Comandos:" + ("\n") +  "dica       - entra no mercado de dicas"  + ("\n") + "desisto    - desiste da rodada" + ("\n") + "inventario - exibe sua posição"+ ("\n") + ("\n"))
 pais = sorteia_pais(dados_paises)
 chances = 20
 dic_cores = (dados_paises[pais]["bandeira"])
@@ -22,3 +22,13 @@ dic_area = {"+ Área": areas}
 dic_populacao = {"+ População": populacao}
 dic_continente = {"+ Continente": continente}
 dic_dicas = {1: "Cor da bandeira", 2: "Letra da capital", 3: "Área", 4: "População", 5: "Continente", 0: "Sem dica"}
+
+for cor,valor in dic_cores.items():
+    if cor != 'outras' and valor > 0:
+        lista_cores.append(cor)
+
+k = True
+
+while k:
+    print('\n' + '| O jogo começou!                  |' + '\n' + '| Tente descobri o País escolhido! |' + '\n' + '| Você tem 20 chances!             |')
+    palavra = input('\n' + 'Qual seu palpite?' + '\n')  
