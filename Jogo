@@ -5,7 +5,19 @@ from dados import raio
 
 dados_paises = normaliza(dados_paises)
 
-print ('\n' + "*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*" + ("\n") + "|                               |"+ ("\n") +"| Bem-vindo à: Descobrir Países |"+ ("\n")+ "|                               |"+ ("\n") + "  ==== Design de Software ==== "+ ("\n") + ("\n") +"Comandos:" + ("\n") +  "dica       - entra no mercado de dicas"  + ("\n") + "desisto    - desiste da rodada" + ("\n") + "inventario - exibe sua posição"+ ("\n") + ("\n"))
+print(
+    '+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n'
+    '*+*                                  +*+\n'  
+    '*+*   BEM VINDO AO JOGO DOS PAÍSES   +*+\n'    
+    '*+*                                  +*+\n'                                                                                           
+    '+*+*+*+*+*___Ananda e Carol___+*+*+*+*+*\n'   
+    '\nComandos para o jogo:\n'
+        'Dica --> entra no mercadinho das dicas\n'
+        'Desisto --> desiste da rodada\n'
+        'Inventário --> exibe sua posição\n\n'
+'Um país foi escolhido, tente adivinhar qual é!'
+)
+
 
 k = True
 
@@ -43,7 +55,7 @@ while k:
         palavra = input('\n' + 'Qual seu palpite?' + '\n')
 
         print_dist = '\n' + 'Distâncias:'
-        print_dicas = '\n' + '\n' + 'Dicas:'
+        print_dicas = '\n' + '\n' + 'Dicas:\n'        
         print_chances = '\n' + '\n' + 'Você tem {0} tentativa(s)'.format(chances)
         
         if chances == 0:
@@ -72,6 +84,33 @@ while k:
                 print('{0} {1} {2}'.format(print_dist,print_dicas,print_chances))
             elif distancia == 0 and palavra == pais:
                 print('*+*+* Parabéns! Você acertou após {0} tentativas! *+*+*'.format(tentativas))
+                break
         elif palavra not in dados_paises and palavra not in comandos:
             print('País desconhecido, ou comando inexistente.')
-        
+        else:
+            if palavra == 'dica':
+                print(print_dicas+'valor em tentativas --> dica\n'+'1 tentativa --> Cor da bandeira\n'+'2 tentativas --> Letra da capital\n'+'3 tentativas --> Área\n'+'4 tentativas --> População\n'+'5 tentativas --> Continente\n'+'0 tentativas --> Sem dica\n')
+                quer_dica = int(input())
+                if quer_dica == 1:
+                    chances -=1
+                    print(dic_cor_bandeira)
+                elif quer_dica == 2:
+                    chances -=2
+                    print(dic_letra_capital)
+                elif quer_dica == 3:
+                    chances -=3
+                    print(dic_area)
+                elif quer_dica == 4:
+                    chances -= 4
+                    print(dic_populacao)
+                elif quer_dica ==5:
+                    chances -=5
+                    print(dic_continente)
+                elif quer_dica == 0:
+                    break
+                else:
+                    print('Comando inválido! Digite novamente.')
+            elif palavra == 'desisto':
+                pergunta = str(input('Vai mesmo desistir? [s/n]'))
+                if pergunta == 's':
+                    print("Que pena que você desistiu, o seu país era: ",pais)
