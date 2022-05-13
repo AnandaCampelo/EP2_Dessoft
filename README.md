@@ -4,8 +4,8 @@ tentativas = 20
 print(
     '+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n'
     '*+*                                  +*+\n'  
-    '*+*   BEM VINDO AO JOGO DOS PAÍSES   +*+\n'                                                                                                                              
-    '*+*                                  +*+\n'  
+    '*+*   BEM VINDO AO JOGO DOS PAÍSES   +*+\n'    
+    '*+*                                  +*+\n'                                                                                           
     '+*+*+*+*+*___Ananda e Carol___+*+*+*+*+*\n'   
     '\nComandos para o jogo:\n'
         'Dica --> entra no mercadinho das dicas\n'
@@ -15,3 +15,4 @@ print(
 )
 print('Você tem {} chances'.format(tentativas))
 print('Qual o seu palpite?')
+
