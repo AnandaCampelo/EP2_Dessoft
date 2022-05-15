@@ -26,7 +26,7 @@ print(
 k = True
 
 while k:
-    print('\n' + '|          O jogo começou!         |' + '\n' + '| Tente descobrir o País escolhido! |' + '\n' + '|       Você tem 20 chances!       |' + '\n')
+    print('\n' + '|          O jogo começou!          |' + '\n' + '| Tente descobrir o País escolhido! |' + '\n' + '|       Você tem 20 chances!        |' + '\n')
     chances = 19
     tentativas = 0
     pais = sorteia_pais(dados_paises)
