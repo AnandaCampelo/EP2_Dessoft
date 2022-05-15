@@ -2,6 +2,8 @@
 from Funções import adiciona_em_ordem, haversine, normaliza, sorteia_pais, esta_na_lista
 from dados import dados_paises
 from dados import raio
+import random as r
+
 
 dados_paises = normaliza(dados_paises)
 
@@ -94,11 +96,18 @@ while k:
             print('País desconhecido, ou comando inexistente.')
         else:
             if palavra == 'dica':
-                print(print_dicas+'valor em tentativas --> dica\n'+'1 tentativa --> Cor da bandeira\n'+'2 tentativas --> Letra da capital\n'+'3 tentativas --> Área\n'+'4 tentativas --> População\n'+'5 tentativas --> Continente\n'+'0 tentativas --> Sem dica\n')
+                print(print_dicas+'valor em tentativas --> dica\n'+'1 : 4 tentativas --> Cor da bandeira\n'+'2 : 3 tentativas --> Letra da capital\n'+'3 : 6 tentativas --> Área\n'+'4 : 5 tentativas --> População\n'+'5 : 5 tentativas --> Continente\n'+'6 : 0 tentativas --> Sem dica\n')
                 quer_dica = int(input())
                 if quer_dica == 1:
-                    chances -=1
-                    print(dic_cor_bandeira)
+                    if len(lista_cores)>0:
+                            cor_aleatoria = r.choice(lista_cores)
+                            print("Uma das cores é",cor_aleatoria)
+                            lista_cores.remove(cor_aleatoria) 
+                            tentativas-=4
+                    else:
+                        print("\nAcabaram as cores T^T Tente outra dica!! ")
+
+                    
                 elif quer_dica == 2:
                     chances -=2
                     print(dic_letra_capital)
