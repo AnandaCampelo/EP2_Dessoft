@@ -1,8 +1,12 @@
 #começando o jogo
-from Funções import adiciona_em_ordem, haversine, normaliza, sorteia_pais, esta_na_lista
+from Funções import adiciona_em_ordem, func_dicas, haversine, mercado_dicas, normaliza, sorteia_pais, esta_na_lista, mercado_dicas, func_dicas
+import random
 from dados import dados_paises
 from dados import raio
 import random as r
+import colorama
+from colorama import Fore, Back, Style
+colorama.init(autoreset=True)
 
 
 dados_paises = normaliza(dados_paises)
@@ -16,29 +20,28 @@ print(
     '\nComandos para o jogo:\n'
         'Dica --> entra no mercadinho das dicas\n'
         'Desisto --> desiste da rodada\n'
-        'Inventário --> exibe sua posição\n\n'
-'Um país foi escolhido, tente adivinhar qual é!'
-)
+        'Inventário --> exibe sua posição\n')
 
 
 k = True
 
 while k:
-    print('\n' + '|          O jogo começou!         |' + '\n' + '| Tente descobri o País escolhido! |' + '\n' + '|       Você tem 20 chances!       |')
+    print('\n' + '|          O jogo começou!         |' + '\n' + '| Tente descobrir o País escolhido! |' + '\n' + '|       Você tem 20 chances!       |' + '\n')
     chances = 19
     tentativas = 0
     pais = sorteia_pais(dados_paises)
     dic_cores = (dados_paises[pais]["bandeira"])
     lista_cores = []
     lista_letra = list(dados_paises[pais]["capital"])
-    lista_nova_letra = []
-    areas = (dados_paises[pais]["area"])
+    cor_bandeira = []
+    letra = ''
+    area = (dados_paises[pais]["area"])
     populacao = (dados_paises[pais]["populacao"])
     continente = (dados_paises[pais]["continente"])
 
     dic_cor_bandeira = {"+ Cores da bandeira": lista_cores}
-    dic_letra_capital = {"+ Letras da capital": lista_nova_letra}
-    dic_area = {"+ Área": areas}
+    dic_letra_capital = {"+ Letras da capital": letra}
+    dic_area = {"+ Área": area}
     dic_populacao = {"+ População": populacao}
     dic_continente = {"+ Continente": continente}
     dic_dicas = {1: "Cor da bandeira", 2: "Letra da capital", 3: "Área", 4: "População", 5: "Continente", 0: "Sem dica"}
@@ -52,14 +55,31 @@ while k:
     lista_ja_escolhido = []
     lista_distancias = []
 
+    dica1 = 0
+    dica2 = 0
+    dica3 = 0
+    dica4 = 0
+    dica5 = 0
+
+    lista_dicas_usadas = []
+    lista_dicas_usadas2 = []
+    dica_cor = '\n'
+
+    cores = True
+
     j = True
     while j:
-        palavra = input('\n' + 'Qual seu palpite?' + '\n')
+        palavra = input('Qual seu palpite?' + '\n')
 
         print_dist = '\n' + 'Distâncias:'
-        print_dicas = '\n' + '\n' + 'Dicas:\n'        
-        print_chances = '\n' + '\n' + 'Você tem {0} tentativa(s)'.format(chances)
-        
+        print_dicas = '\n' + '\n' + 'Dicas:\n'  
+        if chances >10:
+            print_chances = '\n' + 'Você tem {}{}{} tentativa(s)'.format('\033[4;34m',chances,'\033[m')
+        if chances <=10:
+            print_chances = '\n' + 'Você tem {}{}{} tentativa(s)'.format('\033[4;33m',chances,'\033[m')
+        if chances <=5:
+            print_chances = '\n' + 'Você tem {}{}{} tentativa(s)'.format('\033[4;31m',chances,'\033[m')
+        print(print_chances)
         if chances == 0:
             print('Sinto muito! Você zerou suas chances :(' + '\n' + 'O País sorteado era: {0}'.format(pais))
             novamente = input('Jogar novamente? [s/n]' + '\n')
@@ -79,11 +99,9 @@ while k:
                 chances -= 1
                 tentativas += 1 
                 lista_ja_escolhido.append(palavra)
-                print(lista_ja_escolhido)
                 lista_distancias = adiciona_em_ordem(palavra, distancia, lista_distancias)
-                for e in lista_distancias:
-                    print_dist += '\n' + '  {0} -> {1}'.format(e[1],e[0])
-                print('{0} {1} {2}'.format(print_dist,print_dicas,print_chances))
+                dist_dicas = func_dicas(lista_distancias, lista_dicas_usadas2, cor_bandeira, letra, area, populacao, continente)
+                print('{0} {1}'.format(dist_dicas, print_chances))
             elif distancia == 0 and palavra == pais:
                 print('*+*+* Parabéns! Você acertou após {0} tentativas! *+*+*'.format(tentativas))
                 novamente = input('Jogar novamente? [s/n]' + '\n')
@@ -94,7 +112,7 @@ while k:
                     break
         elif palavra not in dados_paises and palavra not in comandos:
             print('País desconhecido, ou comando inexistente.')
-        else:
+        elif palavra in comandos:
             if palavra == 'dica':
                 print(print_dicas+'valor em tentativas --> dica\n'+'1 : 4 tentativas --> Cor da bandeira\n'+'2 : 3 tentativas --> Letra da capital\n'+'3 : 6 tentativas --> Área\n'+'4 : 5 tentativas --> População\n'+'5 : 5 tentativas --> Continente\n'+'6 : 0 tentativas --> Sem dica\n')
                 quer_dica = int(input())
@@ -116,15 +134,71 @@ while k:
                     print(dic_area)
                 elif quer_dica == 4:
                     chances -= 4
-                    print(dic_populacao)
-                elif quer_dica ==5:
-                    chances -=5
-                    print(dic_continente)
+                    cor_escolhida = random.choice(lista_cores)
+                    while cor_escolhida in cor_bandeira:
+                        cor_escolhida = random.choice(lista_cores)
+                    dica_cor += cor_escolhida + '\n'
+                    cor_bandeira.append(cor_escolhida)
+                    lista_dicas_usadas2.append(1)
+                    dist_dicas = func_dicas(lista_distancias, lista_dicas_usadas2, cor_bandeira, letra, area, populacao, continente)
+                    print('{0}'.format(dist_dicas))
+                    if len(cor_bandeira) == len(lista_cores):
+                        print('Cores esgotadas!')
+                        cores = False
+                elif quer_dica == 2 and dica2 == 0 and chances >= 3:
+                    dica2 += 1
+                    chances -= 3
+                    lista_dicas_usadas.append(2)
+                    lista_dicas_usadas2.append(2)
+                    letra = random.choice(lista_letra)
+                    dist_dicas = func_dicas(lista_distancias, lista_dicas_usadas2, cor_bandeira, letra, area, populacao, continente)
+                    print('{0}'.format(dist_dicas))
+                elif quer_dica == 3 and dica3 == 0 and chances >= 6:
+                    dica3 += 1
+                    chances -= 6
+                    lista_dicas_usadas.append(3)
+                    lista_dicas_usadas2.append(3)
+                    dist_dicas = func_dicas(lista_distancias, lista_dicas_usadas2, cor_bandeira, letra, area, populacao, continente)
+                    print('{0}'.format(dist_dicas))
+                elif quer_dica == 4 and dica4 == 0 and chances >= 5:
+                    dica3 += 1
+                    chances -= 5
+                    lista_dicas_usadas.append(4)
+                    lista_dicas_usadas2.append(4)
+                    dist_dicas = func_dicas(lista_distancias, lista_dicas_usadas2, cor_bandeira, letra, area, populacao, continente)
+                    print('{0}'.format(dist_dicas))
+                elif quer_dica == 5 and dica5 == 0 and chances >= 7:
+                    chances -= 7
+                    lista_dicas_usadas.append(5)
+                    lista_dicas_usadas2.append(5)
+                    dist_dicas = func_dicas(lista_distancias, lista_dicas_usadas2, cor_bandeira, letra, area, populacao, continente)
+                    print('{0}'.format(dist_dicas))
                 elif quer_dica == 0:
                     break
+                elif quer_dica == 1 and chances < 4:
+                    print('\n' + 'Opção inválida.' + '\n')
+                elif quer_dica == 2 and dica2 != 0 or quer_dica == 2 and chances < 3:
+                    print('\n' + 'Opção inválida.' + '\n')
+                elif quer_dica == 3 and dica3 != 0 or quer_dica == 3 and chances < 6:
+                    print('\n' + 'Opção inválida.' + '\n')
+                elif quer_dica == 4 and dica4 != 0 or quer_dica == 4 and chances < 5:
+                    print('\n' + 'Opção inválida.' + '\n')
+                elif quer_dica == 5 and dica5 != 0 or quer_dica == 5 and chances < 7:
+                    print('\n' + 'Opção inválida.' + '\n')
                 else:
                     print('Comando inválido! Digite novamente.')
             elif palavra == 'desisto':
                 pergunta = str(input('Vai mesmo desistir? [s/n]'))
                 if pergunta == 's':
                     print("Que pena que você desistiu, o seu país era: ",pais)
+                    novamente = input('\n' + 'Jogar novamente? [s/n]' + '\n')
+                    if novamente == 'n':
+                        print('\n' + '   Até a próxima!')
+                        k = False
+                        j = False
+                        break
+                    else:
+                        break
+            elif palavra == 'inventario':
+                dist_dicas = func_dicas(lista_distancias, lista_dicas_usadas2, cor_bandeira, letra, area, populacao, continente)
+                print('{0}'.format(dist_dicas))
