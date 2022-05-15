@@ -158,7 +158,13 @@ def func_dicas(lista_distancias, lista_dicas_usadas2, cor_bandeira, letra, area,
         print_dicas += '    - Continente: ' + continente + '\n'
     
     for e in lista_distancias:
-        print_dist += '\n' + '  {0} km -> {1}'.format(e[1],e[0])
-    
+        if e[1] >= 1e4:
+            print_dist += '\n' + '  {0} km -> {1}'.format('\033[4;37m',e[1],'\033[m',e[0])
+        if 1e4 > e[1] >= 5000:
+            print_dist += '\n' + '  {0} km -> {1}'.format('\033[4;35m',e[1],'\033[m',e[0])
+        if 5000> e[1] >= 2000:
+            print_dist += '\n' + '  {0} km -> {1}'.format('\033[4;31m',e[1],'\033[m',e[0])
+        if e[1] < 2000:
+            print_dist += '\n' + '  {0} km -> {1}'.format('\033[4;33m',e[1],'\033[m',e[0])
     para_print = print_dist + print_dicas
     return para_print
